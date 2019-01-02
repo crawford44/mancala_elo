@@ -1,18 +1,28 @@
 playersList = []
 eloList = []
 gameOutcomesList = []
+
+#Essentially a multiplier for the Elo equation (K)
+#Decreasing this value will decrease the effect of a loss or win on a players rating
+KValue = 32
+
 print('MANCALA ELO CALCULATOR')
+
+#Must initiate at least 2 players
 player = input('Input player name:')
 playersList.append(player)
 player = input('Input player name:')
-KValue = 32
+
 while player.upper() != 'DONE':
     playersList.append(player)
     player = input('Input player name (Enter DONE when finished):')
 
+#Set beginning Elo ratings (800 for complete beginner)
 for plyr in playersList:
-    baseElo = int(input(plyr+' base rating: '))
+    baseElo = int(input(plyr+' base rating (800 for complete beginner): '))
     eloList.append(baseElo)
+
+#Must input at least 1 game for Elo ratings to change
 gameCount = 1
 print('Game '+str(gameCount)+':')
 p1Name = input('    Input name of player 1')
@@ -35,10 +45,13 @@ while p1Name.upper() != 'DONE':
 
 print(str(gameCount)+' game(s) recorded')
 
+#Calculate Elo ratings after each game
 for game in gameOutcomesList:
+    #Determine ratings before the game
     p1OriginalRating=eloList[playersList.index(game[0])]
     p2OriginalRating=eloList[playersList.index(game[1])]
-
+    
+    
     p1TransformedRating=10**(p1OriginalRating/400)
     p2TransformedRating=10**(p2OriginalRating/400)
     #print('transformed ratings',p1TransformedRating,p2TransformedRating)
@@ -58,6 +71,7 @@ for game in gameOutcomesList:
     eloList[playersList.index(game[0])]=p1NewElo
     eloList[playersList.index(game[1])]=p2NewElo
 
+#Display final Elo ratings for all players
 for name in playersList:
     print(name+' final rating = ',end='')
     print(eloList[playersList.index(name)])
